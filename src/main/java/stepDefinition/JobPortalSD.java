@@ -1,5 +1,8 @@
 package stepDefinition;
 
+import POJO.CreateUserPOJO;
+import POJO.Project;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -8,6 +11,9 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static Util.SpecObjects.getRequestSpecObject;
 import static io.restassured.RestAssured.given;
@@ -51,36 +57,59 @@ public class JobPortalSD {
     public void createJobPayload() {
 
 
+        CreateUserPOJO ob = new CreateUserPOJO();
+
+/*
+*
+* "jobId": 2,
+  "jobTitle": "Data Analyst",
+  "jobDescription": "Analyze business data and generate insights for decision-making",*/
+
+        ob.setJobId(2);
+        ob.setJobTitle("Data Analyst");
+        ob.setJobDescription("Analyze business data and generate insights for decision-makin");
+
+        ArrayList<String> exp = new ArrayList<>();
+        exp.add("Amazon");
+        exp.add("Microsoft");
+        exp.add("Infosys");
+
+        ob.setExperience(exp);
+
+        Project project1 = new Project();
+        project1.setProjectName("Sales Dashboard");
+
+        ArrayList<String> tech = new ArrayList<>();
+        tech.add("python");
+        tech.add("pandas");
+        tech.add("Power BI");
+
+        project1.setTechnology(tech);
+
+        Project project2 = new Project();
+        project2.setProjectName("Stock Dashboard");
+
+        ArrayList<String> tech2 = new ArrayList<>();
+        tech2.add("selenium");
+        tech2.add("java");
+        tech2.add("Power BI");
+
+        project2.setTechnology(tech2);
+
+        ArrayList<Project> proj = new ArrayList<>();
+        proj.add(project1);
+        proj.add(project2);
+
+        ob.setProject(proj);
+
+
+
+
+        // ob.setExperience((ArrayList<String>) Arrays.asList("Google", "Apple", "Mobile Iron"));
+
+
         request = given().log().all().spec(getRequestSpecObject())
-                .body("{\n" +
-                        "  \"experience\": [\n" +
-                        "    \"3 years in Manual Testing\",\n" +
-                        "    \"2 years in Automation Testing using Selenium\",\n" +
-                        "    \"Experience with API Testing using Postman and Rest Assured\"\n" +
-                        "  ],\n" +
-                        "  \"jobDescription\": \"Responsible for designing, developing, and maintaining automated test scripts. Performing API testing, regression testing, and collaborating with development teams to ensure product quality.\",\n" +
-                        "  \"jobId\": 10123,\n" +
-                        "  \"jobTitle\": \"Senior QA Automation Engineer\",\n" +
-                        "  \"project\": [\n" +
-                        "    {\n" +
-                        "      \"projectName\": \"E-commerce Web Application\",\n" +
-                        "      \"technology\": [\n" +
-                        "        \"Selenium\",\n" +
-                        "        \"Java\",\n" +
-                        "        \"TestNG\",\n" +
-                        "        \"Maven\"\n" +
-                        "      ]\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "      \"projectName\": \"Payment Gateway API Testing\",\n" +
-                        "      \"technology\": [\n" +
-                        "        \"Postman\",\n" +
-                        "        \"Rest Assured\",\n" +
-                        "        \"JMeter\"\n" +
-                        "      ]\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}");
+                .body(ob);
     }
 
     @When("I call CreateJob resource with POST request")
